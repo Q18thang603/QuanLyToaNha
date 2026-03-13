@@ -7,10 +7,10 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 import dao.NguoiThueDAO;
@@ -33,10 +33,8 @@ public class NguoiThueUI extends JFrame {
 		setTitle("Quản lý người thuê");
 		setSize(650, 500);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
 
-		// LABEL
 		JLabel lbTen = new JLabel("Tên người thuê");
 		lbTen.setBounds(40, 40, 120, 25);
 		add(lbTen);
@@ -53,7 +51,6 @@ public class NguoiThueUI extends JFrame {
 		lbPhong.setBounds(40, 160, 120, 25);
 		add(lbPhong);
 
-		// TEXTFIELD
 		txtTen = new JTextField();
 		txtTen.setBounds(150, 40, 180, 25);
 		add(txtTen);
@@ -70,7 +67,6 @@ public class NguoiThueUI extends JFrame {
 		txtPhong.setBounds(150, 160, 180, 25);
 		add(txtPhong);
 
-		// BUTTON
 		JButton btnThem = new JButton("Thêm");
 		btnThem.setBounds(400, 40, 100, 30);
 		add(btnThem);
@@ -83,32 +79,25 @@ public class NguoiThueUI extends JFrame {
 		btnXoa.setBounds(400, 120, 100, 30);
 		add(btnXoa);
 
-		// TABLE
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(40, 220, 550, 200);
-		add(scrollPane);
+		model = new DefaultTableModel();
 
-		table = new JTable();
+		model.setColumnIdentifiers(new Object[] { "ID", "Tên", "SĐT", "CCCD", "Phòng" });
 
-		model = new DefaultTableModel(new Object[][] {}, new String[] { "ID", "Tên", "SĐT", "CCCD", "Phòng" });
+		table = new JTable(model);
 
-		table.setModel(model);
+		JScrollPane sp = new JScrollPane(table);
+		sp.setBounds(40, 220, 550, 200);
 
-		scrollPane.setViewportView(table);
+		add(sp);
 
-		// load dữ liệu
 		loadTable();
 
-		// EVENT THÊM
 		btnThem.addActionListener(e -> themNguoi());
 
-		// EVENT SỬA
 		btnSua.addActionListener(e -> suaNguoi());
 
-		// EVENT XÓA
 		btnXoa.addActionListener(e -> xoaNguoi());
 
-		// CLICK TABLE
 		table.addMouseListener(new MouseAdapter() {
 
 			public void mouseClicked(MouseEvent e) {
@@ -121,9 +110,9 @@ public class NguoiThueUI extends JFrame {
 				txtPhong.setText(model.getValueAt(row, 4).toString());
 			}
 		});
+
 	}
 
-	// LOAD DATA
 	private void loadTable() {
 
 		model.setRowCount(0);
@@ -134,31 +123,43 @@ public class NguoiThueUI extends JFrame {
 
 			model.addRow(new Object[] { nt.getIdNguoi(), nt.getTenNguoi(), nt.getSoDienThoai(), nt.getCccd(),
 					nt.getIdPhong() });
+
 		}
 	}
 
-	// THÊM
 	private void themNguoi() {
 
-		NguoiThue nt = new NguoiThue();
+		try {
 
-		nt.setTenNguoi(txtTen.getText());
-		nt.setSoDienThoai(txtSDT.getText());
-		nt.setCccd(txtCCCD.getText());
-		nt.setIdPhong(Integer.parseInt(txtPhong.getText()));
+			NguoiThue nt = new NguoiThue();
 
-		dao.themNguoiThue(nt);
+			nt.setTenNguoi(txtTen.getText());
+			nt.setSoDienThoai(txtSDT.getText());
+			nt.setCccd(txtCCCD.getText());
+			nt.setIdPhong(Integer.parseInt(txtPhong.getText()));
 
-		loadTable();
+			dao.themNguoiThue(nt);
+
+			loadTable();
+
+			JOptionPane.showMessageDialog(this, "Thêm thành công");
+
+		} catch (Exception e) {
+
+			JOptionPane.showMessageDialog(this, "Dữ liệu không hợp lệ");
+		}
+
 	}
 
-	// SỬA
 	private void suaNguoi() {
 
 		int row = table.getSelectedRow();
 
-		if (row == -1)
+		if (row == -1) {
+
+			JOptionPane.showMessageDialog(this, "Chọn người cần sửa");
 			return;
+		}
 
 		int id = Integer.parseInt(model.getValueAt(row, 0).toString());
 
@@ -173,31 +174,29 @@ public class NguoiThueUI extends JFrame {
 		dao.suaNguoiThue(nt);
 
 		loadTable();
+
+		JOptionPane.showMessageDialog(this, "Sửa thành công");
+
 	}
 
-	// XÓA
 	private void xoaNguoi() {
 
 		int row = table.getSelectedRow();
 
-		if (row == -1)
+		if (row == -1) {
+
+			JOptionPane.showMessageDialog(this, "Chọn người cần xóa");
 			return;
+		}
 
 		int id = Integer.parseInt(model.getValueAt(row, 0).toString());
 
 		dao.xoaNguoiThue(id);
 
 		loadTable();
-	}
 
-	// MAIN
-	public static void main(String[] args) {
-
-		SwingUtilities.invokeLater(() -> {
-
-			new NguoiThueUI().setVisible(true);
-
-		});
+		JOptionPane.showMessageDialog(this, "Xóa thành công");
 
 	}
+
 }

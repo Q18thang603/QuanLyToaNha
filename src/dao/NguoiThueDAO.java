@@ -11,14 +11,14 @@ import model.NguoiThue;
 
 public class NguoiThueDAO {
 
-	// thêm người thuê
 	public void themNguoiThue(NguoiThue nt) {
-
-		String sql = "INSERT INTO nguoi_thue(ten_nguoi, so_dien_thoai, cccd, id_phong) VALUES (?, ?, ?, ?)";
 
 		try {
 
 			Connection conn = KetNoiMySQL.getConnection();
+
+			String sql = "INSERT INTO nguoi_thue(ten_nguoi, so_dien_thoai, cccd, id_phong) VALUES (?,?,?,?)";
+
 			PreparedStatement ps = conn.prepareStatement(sql);
 
 			ps.setString(1, nt.getTenNguoi());
@@ -31,17 +31,16 @@ public class NguoiThueDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 	}
 
-	// sửa người thuê
 	public void suaNguoiThue(NguoiThue nt) {
-
-		String sql = "UPDATE nguoi_thue SET ten_nguoi=?, so_dien_thoai=?, cccd=?, id_phong=? WHERE id_nguoi=?";
 
 		try {
 
 			Connection conn = KetNoiMySQL.getConnection();
+
+			String sql = "UPDATE nguoi_thue SET ten_nguoi=?, so_dien_thoai=?, cccd=?, id_phong=? WHERE id_nguoi=?";
+
 			PreparedStatement ps = conn.prepareStatement(sql);
 
 			ps.setString(1, nt.getTenNguoi());
@@ -57,14 +56,14 @@ public class NguoiThueDAO {
 		}
 	}
 
-	// xóa người thuê
 	public void xoaNguoiThue(int id) {
-
-		String sql = "DELETE FROM nguoi_thue WHERE id_nguoi=?";
 
 		try {
 
 			Connection conn = KetNoiMySQL.getConnection();
+
+			String sql = "DELETE FROM nguoi_thue WHERE id_nguoi=?";
+
 			PreparedStatement ps = conn.prepareStatement(sql);
 
 			ps.setInt(1, id);
@@ -76,16 +75,16 @@ public class NguoiThueDAO {
 		}
 	}
 
-	// lấy danh sách người thuê
 	public List<NguoiThue> layDanhSach() {
 
 		List<NguoiThue> list = new ArrayList<>();
 
-		String sql = "SELECT * FROM nguoi_thue";
-
 		try {
 
 			Connection conn = KetNoiMySQL.getConnection();
+
+			String sql = "SELECT * FROM nguoi_thue";
+
 			PreparedStatement ps = conn.prepareStatement(sql);
 
 			ResultSet rs = ps.executeQuery();
@@ -101,7 +100,6 @@ public class NguoiThueDAO {
 				nt.setIdPhong(rs.getInt("id_phong"));
 
 				list.add(nt);
-
 			}
 
 		} catch (Exception e) {
@@ -110,5 +108,4 @@ public class NguoiThueDAO {
 
 		return list;
 	}
-
 }
