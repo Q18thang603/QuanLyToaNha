@@ -21,13 +21,11 @@ public class MainMenuUI extends JFrame {
 		JButton btnNguoiThue = new JButton("Quản lý người thuê");
 		JButton btnDienNuoc = new JButton("Nhập điện nước");
 		JButton btnHoaDon = new JButton("Tạo hóa đơn");
-		JButton btnDashboard = new JButton("Dashboard");
 
 		add(btnPhong);
 		add(btnNguoiThue);
 		add(btnDienNuoc);
 		add(btnHoaDon);
-		add(btnDashboard);
 
 		// MỞ CÁC FORM
 		btnPhong.addActionListener(e -> {
@@ -46,9 +44,6 @@ public class MainMenuUI extends JFrame {
 			new HoaDonUI().setVisible(true);
 		});
 
-		btnDashboard.addActionListener(e -> {
-			new DashboardUI().setVisible(true);
-		});
 	}
 
 	public static void main(String[] args) {
