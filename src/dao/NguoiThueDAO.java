@@ -34,6 +34,48 @@ public class NguoiThueDAO {
 
 	}
 
+	// sửa người thuê
+	public void suaNguoiThue(NguoiThue nt) {
+
+		String sql = "UPDATE nguoi_thue SET ten_nguoi=?, so_dien_thoai=?, cccd=?, id_phong=? WHERE id_nguoi=?";
+
+		try {
+
+			Connection conn = KetNoiMySQL.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+
+			ps.setString(1, nt.getTenNguoi());
+			ps.setString(2, nt.getSoDienThoai());
+			ps.setString(3, nt.getCccd());
+			ps.setInt(4, nt.getIdPhong());
+			ps.setInt(5, nt.getIdNguoi());
+
+			ps.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// xóa người thuê
+	public void xoaNguoiThue(int id) {
+
+		String sql = "DELETE FROM nguoi_thue WHERE id_nguoi=?";
+
+		try {
+
+			Connection conn = KetNoiMySQL.getConnection();
+			PreparedStatement ps = conn.prepareStatement(sql);
+
+			ps.setInt(1, id);
+
+			ps.executeUpdate();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	// lấy danh sách người thuê
 	public List<NguoiThue> layDanhSach() {
 
